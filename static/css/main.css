@@ -1,0 +1,51 @@
+
+/* MAIN CONTAINER */
+.main_container {
+    margin: 20px;
+    padding: 20px;
+}
+
+/* HEADERS */
+.headers {
+    text-align: center;
+    border: solid black 1px;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+#center-headers {
+    display: inline-block;
+}
+
+.hdrs {
+    margin: 5px;
+}
+
+/* INPUT AREA */
+.input_area {
+    margin-top: 20px;
+}
+
+#discussion_area {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+}
+
+#user_input {
+    width: 300px;
+    margin-right: 10px;
+}
+
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}

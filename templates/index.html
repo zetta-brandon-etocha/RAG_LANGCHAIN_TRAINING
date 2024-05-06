@@ -3,26 +3,36 @@
 {% block head %}
 <title>NLP Basics Prompts</title>
 
+
 {% endblock %}
 
+<!-- BODY -->
 {% block body %}
 
-<!-- HEADERS -->
-<div class="headers">
-    <div id="center-headers">
-        <h1 class="hdrs">Basics about NLP</h1>
-        <h5 class="hdrs">Just ask anything about NLP</h5>
+<!-- MAIN CONTAINER -->
+<div class="main_container" id="main_container">
+    <!-- HEADERS -->
+    <div class="headers">
+        <div id="center-headers">
+            <h1 class="hdrs">Basics about NLP</h1>
+            <h5 class="hdrs">Just ask anything about NLP</h5>
+        </div>
     </div>
-    
-</div>
 
-<div>
-    <textarea name="discussion_area" id="discussion_area"></textarea>
-</div>
+    <!-- TEXTAREA AND INPUT -->
+    <div class="input_area">
+        <form action="/user_prompt_add" method="POST">
+            <textarea name="discussion_area" id="discussion_area" rows="10" cols="50">
+                {% if prompt_input %}
+you > {{ prompt_input }}
 
-<div class="input">
-    <input type="text" name="user_input" id="user_input">
-    <input type="submit" value="Add Prompt">
+bot > {{ prompt_output }}
+                {% endif %}
+            </textarea>
+            <input type="text" name="user_input" id="user_input" placeholder="Add Prompt">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 </div>
 
 {% endblock %}

@@ -2,7 +2,7 @@ import os
 from io import BytesIO
 from dotenv import load_dotenv
 import flask
-from flask import render_template
+from flask import render_template, request
 import ast  # for converting embeddings saved as strings back to arrays
 import pandas as pd  # text and embeddings storage
 import numpy #for the vector similarity calculation
@@ -68,5 +68,14 @@ def home():
 
     return render_template('index.html')
 
+@app.route('/user_prompt_add', methods=['POST'])
+def add_user_prompt():
+    if request.method == 'POST':
+        prompt_input = request.form["user_input"]
+        prompt_output= prompt_input + '--> Processed'
+        return render_template('index.html', prompt_input=prompt_input, prompt_output=prompt_output)
+    elif request.method == 'GET':
+        return render_template('index.html')
+    
 if __name__ == "__main__":
     app.run(debug=True)
