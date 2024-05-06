@@ -1,0 +1,29 @@
+.headers {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: "left center right";
+    border: Solid black 1px;
+}
+
+#center-headers {
+    display: grid;
+    grid-area: center;
+}
+
+.hdrs{
+    margin: 1px;
+    padding: 1px;
+}
+
+.input {
+    text-anchor: end;
+}
+
+.user_input{
+    height: 500px;
+    width: 500px;
+}
+
+.discussion_area {
+    width: 500px;
+}

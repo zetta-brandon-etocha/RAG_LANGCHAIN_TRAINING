@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>NLP Basics Prompts</title>
+
+{% endblock %}
+
+{% block body %}
+
+<!-- HEADERS -->
+<div class="headers">
+    <div id="center-headers">
+        <h1 class="hdrs">Basics about NLP</h1>
+        <h5 class="hdrs">Just ask anything about NLP</h5>
+    </div>
+    
+</div>
+
+<div>
+    <textarea name="discussion_area" id="discussion_area"></textarea>
+</div>
+
+<div class="input">
+    <input type="text" name="user_input" id="user_input">
+    <input type="submit" value="Add Prompt">
+</div>
+
+{% endblock %}
