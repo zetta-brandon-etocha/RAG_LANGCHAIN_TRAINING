@@ -23,10 +23,8 @@
     <div class="input_area">
         <form action="/user_prompt_add" method="POST">
             <textarea name="discussion_area" id="discussion_area" rows="10" cols="50">
-                {% if prompt_input %}
-you > {{ prompt_input }}
-
-bot > {{ prompt_output }}
+                {% if memory %}
+{{memory}}
                 {% endif %}
             </textarea>
             <input type="text" name="user_input" id="user_input" placeholder="Add Prompt">

@@ -6,10 +6,18 @@ from flask import render_template, request
 import ast  # for converting embeddings saved as strings back to arrays
 import pandas as pd  # text and embeddings storage
 import numpy #for the vector similarity calculation
-from langchain_openai import OpenAI
+from langchain_openai import OpenAI, ChatOpenAI
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.chat_models import azure_openai
+from langchain.memory import ConversationBufferMemory
+from langchain.chains import LLMChain
+from langchain_core.prompts import (
+    ChatPromptTemplate,
+    MessagesPlaceholder,
+    SystemMessagePromptTemplate,
+    HumanMessagePromptTemplate,
+)
 # from langchain.embeddings import gpt4all
 from langchain.chains.question_answering import load_qa_chain
 import PyPDF2
@@ -22,20 +30,28 @@ import requests
 # import Chroma
 # from Chroma import OpenAIEmbeddings
 
-
 load_dotenv()
-DATA_PATH = r"C:\Users\etocha\Documents\Zettabyte courses\RAG_Langchain_Training\data\NLP.pdf"
-CHROMA_PATH = "chroma"
-
-# db = Chroma.from_documents(chunks, OpenAIEmbeddings(), persist_directory=CHROMA_PATH)
 
 # models
 EMBEDDING_MODEL = "text-embedding-ada-002"
 GPT_MODEL = "gpt-3.5-turbo"
-openai_api_key = (os.getenv("OPENAI_API_KEY"))
-# openai_api_key = "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"
-llm = OpenAI(api_key=openai_api_key)
+llm = OpenAI(api_key=os.getenv("MY_OPENAI_API_KEY"))
+prompt = ChatOpenAI(
+    messages=[
+        MessagesPlaceholder(variable_name='chat_memory'),
+        HumanMessagePromptTemplate.from_template("{question}")
+    ]
+)
 app = flask.Flask(__name__)
+
+
+DATA_PATH = r"C:\Users\etocha\Documents\Zettabyte courses\RAG_Langchain_Training\data\NLP.pdf"
+memory = ConversationBufferMemory(memory_key="chat_history", return_messages=True, human_prefix="You >", ai_prefix="Bot >")
+
+CHROMA_PATH = "chroma"
+
+# db = Chroma.from_documents(chunks, OpenAIEmbeddings(), persist_directory=CHROMA_PATH)
+
 
 def load_documents():
     loader = PyPDFLoader(DATA_PATH)
@@ -71,11 +87,14 @@ def home():
 def add_user_prompt():
     if request.method == 'POST':
         prompt_input = request.form["user_input"]
-        prompt_output = llm.invoke(
-            prompt_input
-        )
+        try : 
+            prompt_output = llm.invoke(prompt_input)
+        except Exception as e:
+            prompt_output = f"Sorry, there was a problem connecting to the AI model. Please try later.\n {e}"
         print(prompt_output)
-        return render_template('index.html', prompt_input=prompt_input, prompt_output=prompt_output)
+        memory.chat_memory.add_user_message(prompt_input)
+        memory.chat_memory.add_ai_message(prompt_output)
+        return render_template('index.html', memory=memory.chat_memory)
     elif request.method == 'GET':
         return render_template('index.html')
     
