@@ -19,17 +19,21 @@ from pdfminer.high_level import extract_text
 import tiktoken  # to count tokens
 from scipy import spatial
 import requests
+# import Chroma
+# from Chroma import OpenAIEmbeddings
 
 
-
-load_dotenv(r"C:\Users\etocha\Documents\Zettabyte courses\RAG_Langchain_Training\.env")
+load_dotenv()
 DATA_PATH = r"C:\Users\etocha\Documents\Zettabyte courses\RAG_Langchain_Training\data\NLP.pdf"
+CHROMA_PATH = "chroma"
 
+# db = Chroma.from_documents(chunks, OpenAIEmbeddings(), persist_directory=CHROMA_PATH)
 
 # models
 EMBEDDING_MODEL = "text-embedding-ada-002"
 GPT_MODEL = "gpt-3.5-turbo"
-openai_api_key = os.getenv("OPENAI_API_KEY")
+openai_api_key = (os.getenv("OPENAI_API_KEY"))
+# openai_api_key = "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"
 llm = OpenAI(api_key=openai_api_key)
 app = flask.Flask(__name__)
 
@@ -61,18 +65,16 @@ def process_pdf_bis():
 @app.route('/', methods= ['POST', 'GET'])
 def home():
     split_text(load_documents())
-    # response = llm.invoke(
-    # "What are some theories about the relationship between unemployment and inflation?"
-    # )
-    # print(response)
-
     return render_template('index.html')
 
 @app.route('/user_prompt_add', methods=['POST'])
 def add_user_prompt():
     if request.method == 'POST':
         prompt_input = request.form["user_input"]
-        prompt_output= prompt_input + '--> Processed'
+        prompt_output = llm.invoke(
+            prompt_input
+        )
+        print(prompt_output)
         return render_template('index.html', prompt_input=prompt_input, prompt_output=prompt_output)
     elif request.method == 'GET':
         return render_template('index.html')
