@@ -35,7 +35,7 @@ load_dotenv(find_dotenv())
 # models
 EMBEDDING_MODEL = "text-embedding-ada-002"
 GPT_MODEL = "gpt-3.5-turbo"
-llm = OpenAI(api_key=os.getenv("MY_OPENAI_API_KEY"))
+llm = OpenAI(api_key='your_openai_api_key')
 prompt = ChatOpenAI(
     messages=[
         MessagesPlaceholder(variable_name='chat_memory'),
