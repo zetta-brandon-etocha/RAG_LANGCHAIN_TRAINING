@@ -42,6 +42,7 @@ prompt = ChatOpenAI(
         HumanMessagePromptTemplate.from_template("{question}")
     ]
 )
+
 app = flask.Flask(__name__)
 
 
