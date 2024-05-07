@@ -1,6 +1,6 @@
 import os
 from io import BytesIO
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import flask
 from flask import render_template, request
 import ast  # for converting embeddings saved as strings back to arrays
@@ -30,7 +30,7 @@ import requests
 # import Chroma
 # from Chroma import OpenAIEmbeddings
 
-load_dotenv()
+load_dotenv(find_dotenv())
 
 # models
 EMBEDDING_MODEL = "text-embedding-ada-002"
